@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Members – COGOP{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Members</h1>
+    <a href="{{ url_for('members.add_member_form') }}" class="btn btn-primary">+ Add Member</a>
+</div>
+
+<form method="GET" action="{{ url_for('members.list_members') }}" class="search-form">
+    <input type="text" name="search" placeholder="Search by name..." value="{{ search_query or '' }}">
+    <button type="submit" class="btn btn-secondary">Search</button>
+    {% if search_query %}
+        <a href="{{ url_for('members.list_members') }}" class="btn btn-secondary">Clear</a>
+    {% endif %}
+</form>
+
+{% if members %}
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Contact</th>
+            <th>DOB</th>
+            <th>Status</th>
+            <th>Ministry</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for member in members %}
+        <tr>
+            <td>{{ member.id }}</td>
+            <td>{{ member.name }}</td>
+            <td>{{ member.contact_info }}</td>
+            <td>{{ member.dob or '—' }}</td>
+            <td>
+                <span class="badge badge-{{ 'active' if member.status == 'Active' else 'inactive' }}">
+                    {{ member.status }}
+                </span>
+            </td>
+            <td>{{ member.ministry.name if member.ministry else '—' }}</td>
+            <td class="actions">
+                <a href="{{ url_for('members.edit_member_form', member_id=member.id) }}" class="btn btn-sm btn-secondary">Edit</a>
+                <form method="POST" action="{{ url_for('members.delete_member', member_id=member.id) }}"
+                      onsubmit="return confirm('Remove {{ member.name }}?')" style="display:inline">
+                    <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+    <p>{{ 'No members found for "' + search_query + '"' if search_query else 'No members yet.' }}</p>
+    <a href="{{ url_for('members.add_member_form') }}" class="btn btn-primary">Add the first member</a>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Dashboard – COGOP{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Dashboard</h1>
+    <p>Welcome back, <strong>{{ admin_username }}</strong></p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-number">{{ total_members }}</div>
+        <div class="stat-label">Total Members</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ active_members }}</div>
+        <div class="stat-label">Active Members</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-number">{{ total_ministries }}</div>
+        <div class="stat-label">Ministries</div>
+    </div>
+</div>
+
+<div class="quick-actions">
+    <h2>Quick Actions</h2>
+    <div class="action-grid">
+        <a href="{{ url_for('members.list_members') }}" class="action-card">
+            <span class="action-icon"></span>
+            <span>View Members</span>
+        </a>
+        <a href="{{ url_for('members.add_member_form') }}" class="action-card">
+            <span class="action-icon"></span>
+            <span>Add Member</span>
+        </a>
+    </div>
+</div>
+{% endblock %}

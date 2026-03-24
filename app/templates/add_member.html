@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Add Member – COGOP{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Add Member</h1>
+    <a href="{{ url_for('members.list_members') }}" class="btn btn-secondary">← Back</a>
+</div>
+
+<div class="form-card">
+    <form method="POST" action="{{ url_for('members.add_member') }}">
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="name">Full Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="contact_info">Contact Info <span class="required">*</span></label>
+                <input type="text" id="contact_info" name="contact_info"
+                       placeholder="Phone or email" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob">
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address">
+        </div>
+
+        <div class="form-group">
+            <label for="ministry_id">Ministry</label>
+            <select id="ministry_id" name="ministry_id">
+                <option value="">— None —</option>
+                {% for ministry in ministries %}
+                <option value="{{ ministry.id }}">{{ ministry.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Member</button>
+            <a href="{{ url_for('members.list_members') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

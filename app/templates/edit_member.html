@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Edit Member – COGOP{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Edit Member</h1>
+    <a href="{{ url_for('members.list_members') }}" class="btn btn-secondary">← Back</a>
+</div>
+
+<div class="form-card">
+    <form method="POST" action="{{ url_for('members.update_member', member_id=member.id) }}">
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="name">Full Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" value="{{ member.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="contact_info">Contact Info <span class="required">*</span></label>
+                <input type="text" id="contact_info" name="contact_info" value="{{ member.contact_info }}" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob" value="{{ member.dob or '' }}">
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" name="status">
+                    <option value="Active"   {{ 'selected' if member.status == 'Active' }}>Active</option>
+                    <option value="Inactive" {{ 'selected' if member.status == 'Inactive' }}>Inactive</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="address">Address</label>
+            <input type="text" id="address" name="address" value="{{ member.address or '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="ministry_id">Ministry</label>
+            <select id="ministry_id" name="ministry_id">
+                <option value="">— None —</option>
+                {% for ministry in ministries %}
+                <option value="{{ ministry.id }}" {{ 'selected' if member.ministry_id == ministry.id }}>
+                    {{ ministry.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Update Member</button>
+            <a href="{{ url_for('members.list_members') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+
+    </form>
+
+    <div class="danger-zone">
+        <h3>Remove Member</h3>
+        <p>This will permanently delete <strong>{{ member.name }}</strong> from the records.</p>
+        <form method="POST" action="{{ url_for('members.delete_member', member_id=member.id) }}"
+              onsubmit="return confirm('Are you sure you want to remove {{ member.name }}?')">
+            <button type="submit" class="btn btn-danger">Remove Member</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
