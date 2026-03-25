@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Sermon Summaries – COGOP{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Sermon Summaries</h1>
+    <a href="{{ url_for('sermons.new_sermon_form') }}" class="btn btn-primary">+ New Sermon</a>
+</div>
+
+{# Change: Check 'sermons' (the variable passed from the route) #}
+{% if sermons %}
+<div class="announcements-list">
+    {% for s in sermons %}
+    <div class="announcement-card"> {# Fixed typo: announcemnt -> announcement #}
+        <div class="announcement-header">
+            <h2>{{ s.title }}</h2>
+            <div class="announcement-meta">
+                <span>📅 {{ s.date_posted }}</span>
+                <span>🎙️ {{ s.speaker }}</span> {# Added speaker display #}
+            </div>
+        </div>
+        <div class="announcement-body">
+            <p>{{ s.summary_text }}</p> {# Fixed: s.summary -> s.summary_text to match model #}
+        </div>
+        <div class="announcement-footer">
+            <form method="POST"
+                  action="{{ url_for('sermons.delete_sermon', sermon_id=s.id) }}"
+                  onsubmit="return confirm('Delete this sermon?')">
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>No sermons yet.</p>
+    <a href="{{ url_for('sermons.new_sermon_form') }}" class="btn btn-primary">Create First Summary</a>
+</div>
+{% endif %}
+{% endblock %}

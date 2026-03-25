@@ -1,5 +1,5 @@
 from flask import Blueprint, request, redirect, url_for, render_template, flash, session
-from app.services.authenticate import AuthService
+from app.services.auth_service import AuthService
 
 auth_bp = Blueprint('auth', __name__)
 auth_service = AuthService()

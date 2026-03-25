@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Announcements – COGOP{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Announcements</h1>
+    <a href="{{ url_for('announcements.new_announcement_form') }}" class="btn btn-primary">+ New Announcement</a>
+</div>
+
+{% if announcements %}
+<div class="announcements-list">
+    {% for a in announcements %}
+    <div class="announcement-card">
+        <div class="announcement-header">
+            <h2>{{ a.title }}</h2>
+            <div class="announcement-meta">
+                <span>{{ a.date_posted }}</span>
+                <span>{{ a.posted_by }}</span>
+            </div>
+        </div>
+        <div class="announcement-body">
+            <p>{{ a.content }}</p>
+        </div>
+        <div class="announcement-footer">
+            <form method="POST"
+                  action="{{ url_for('announcements.delete_announcement', announcement_id=a.id) }}"
+                  onsubmit="return confirm('Delete this announcement?')">
+                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>No announcements yet.</p>
+    <a href="{{ url_for('announcements.new_announcement_form') }}" class="btn btn-primary">Post the first announcement</a>
+</div>
+{% endif %}
+{% endblock %}

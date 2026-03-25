@@ -29,10 +29,26 @@
             <span class="action-icon"></span>
             <span>View Members</span>
         </a>
+
+        <a href="{{ url_for('announcements.list_announcements') }}" class="action-card">
+            <span class="action-icon"></span>
+            <span>Announcements</span>
+        </a>
+
         <a href="{{ url_for('members.add_member_form') }}" class="action-card">
             <span class="action-icon"></span>
             <span>Add Member</span>
         </a>
+
+        <div class="action-card publish-dropdown">
+            <span class="action-icon">📤</span>
+            <span>Publish Content</span>
+            <div class="dropdown-content">
+                <a href="{{ url_for('announcements.new_announcement_form') }}">New Announcement</a>
+                <a href="{{ url_for('sermons.new_sermon_form') }}">New Sermon</a>
+            </div>
+        </div>
+
     </div>
 </div>
 {% endblock %}

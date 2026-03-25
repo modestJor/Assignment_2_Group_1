@@ -48,3 +48,31 @@ class ChurchAdmin(db.Model):
     email = db.Column(db.String(120), unique=True)
     password_hash = db.Column(db.String(200), nullable=False)
     access_level = db.Column(db.String(50), default='admin')
+
+class Announcement(db.Model):
+    __tablename__ = 'announcement'
+ 
+    id         = db.Column(db.Integer, primary_key=True)
+    title      = db.Column(db.String(150), nullable=False)
+    content    = db.Column(db.Text, nullable=False)
+    date_posted = db.Column(db.String(30))
+    posted_by  = db.Column(db.String(100))
+ 
+    def to_dict(self):
+        return {
+            'id':          self.id,
+            'title':       self.title,
+            'content':     self.content,
+            'date_posted': self.date_posted,
+            'posted_by':   self.posted_by
+        }
+
+class SermonSummary(db.Model):
+    __tablename__ = 'sermon_summary'
+ 
+    id         = db.Column(db.Integer, primary_key=True)
+    title      = db.Column(db.String(150), nullable=False)
+    summary    = db.Column(db.Text, nullable=False)
+    date_preached      = db.Column(db.String(30))
+    date_posted = db.Column(db.String(30))
+    speaker   = db.Column(db.String(100))
