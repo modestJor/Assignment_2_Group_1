@@ -76,3 +76,25 @@ class SermonSummary(db.Model):
     date_preached      = db.Column(db.String(30))
     date_posted = db.Column(db.String(30))
     speaker   = db.Column(db.String(100))
+
+class VolunteerActivity(db.Model):
+    __tablename__ = 'volunteer_activity'
+
+    id         = db.Column(db.Integer, primary_key=True)
+    title      = db.Column(db.String(150), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    date       = db.Column(db.String(30))
+    location   = db.Column(db.String(100))
+    max_volunteers = db.Column(db.Integer)
+
+    signups = db.relationship('VolunteerSignup', backref='activity',
+                                lazy=True, cascade='all, delete-orphan')
+
+class VolunteerSignup(db.Model):
+    __tablename__ = 'volunteer_signup'
+
+    id = db.Column(db.Integer, primary_key=True)
+    volunteer_name = db.Column(db.String(100), nullable=False)
+    contact_info = db.Column(db.String(150), nullable=False)
+    activity_id = db.Column(db.Integer, db.ForeignKey('volunteer_activity.id'), nullable=False)
+    signup_date = db.Column(db.String(30))

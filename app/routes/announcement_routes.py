@@ -1,19 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from functools import wraps
 from app.repositories.announcement_repository import AnnouncementRepository
+from app.decorators import require_admin
 
 announcement_bp = Blueprint('announcements', __name__)
 repo = AnnouncementRepository()
-
-
-def require_admin(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        if 'admin_id' not in session:
-            flash('Please log in to access this page.', 'error')
-            return redirect(url_for('auth.login_form'))
-        return f(*args, **kwargs)
-    return decorated
 
 
 @announcement_bp.route('/')

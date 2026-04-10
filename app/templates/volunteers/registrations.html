@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Signups – {{ activity.title }} – COGOP{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>{{ activity.title }} — Signups</h1>
+    <a href="{{ url_for('volunteers.list_activities') }}" class="btn btn-secondary">← Back</a>
+</div>
+
+<div class="activity-info-bar">
+    {% if activity.date %}<span>📅 {{ activity.date }}</span>{% endif %}
+    {% if activity.location %}<span>📍 {{ activity.location }}</span>{% endif %}
+    <span>👥 {{ signups|length }} signed up</span>
+</div>
+
+<!-- Sign up form -->
+<div class="form-card" style="margin-bottom:1.5rem;">
+    <h3 style="margin-top:0;">Sign Up a Volunteer</h3>
+    <form method="POST"
+          action="{{ url_for('volunteers.signup_for_activity', activity_id=activity.id) }}">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="volunteer_name">Name <span class="required">*</span></label>
+                <input type="text" id="volunteer_name" name="volunteer_name"
+                       placeholder="Full name" required>
+            </div>
+            <div class="form-group">
+                <label for="contact_info">Contact Info</label>
+                <input type="text" id="contact_info" name="contact_info"
+                       placeholder="Phone or email">
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Sign Up</button>
+        </div>
+    </form>
+</div>
+
+<!-- Signups table -->
+<h2 style="font-size:1.1rem; margin-bottom:0.8rem;">
+    Registered Volunteers ({{ signups|length }})
+</h2>
+
+{% if signups %}
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Contact Info</th>
+            <th>Date Signed Up</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for signup in signups %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ signup.volunteer_name }}</td>
+            <td>{{ signup.contact_info or '—' }}</td>
+            <td>{{ signup.signup_date or '—' }}</td>
+            <td>
+                <form method="POST"
+                      action="{{ url_for('volunteers.unregister_from_activity', activity_id=activity.id) }}"
+                      onsubmit="return confirm('Remove {{ signup.volunteer_name }}?')"
+                      style="display:inline">
+                    <input type="hidden" name="volunteer_name" value="{{ signup.volunteer_name }}">
+                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+    <p>No volunteers signed up yet.</p>
+</div>
+{% endif %}
+{% endblock %}

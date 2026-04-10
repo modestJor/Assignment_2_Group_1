@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Volunteer Activities – COGOP{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Volunteer Activities</h1>
+    <a href="{{ url_for('volunteers.new_activity_form') }}" class="btn btn-primary">+ New Activity</a>
+</div>
+
+{% if activities %}
+<div class="activities-grid">
+    {% for activity in activities %}
+    <div class="activity-card">
+        <div class="activity-header">
+            <h2>{{ activity.title }}</h2>
+        </div>
+
+        <div class="activity-meta">
+            {% if activity.date %}
+            <span>📅 {{ activity.date }}</span>
+            {% endif %}
+            {% if activity.location %}
+            <span>📍 {{ activity.location }}</span>
+            {% endif %}
+        </div>
+
+        {% if activity.description %}
+        <p class="activity-desc">{{ activity.description }}</p>
+        {% endif %}
+
+        <div class="activity-footer">
+            <a href="{{ url_for('volunteers.view_registrations', activity_id=activity.id) }}"
+               class="btn btn-secondary btn-sm">View Signups</a>
+            <form method="POST"
+                  action="{{ url_for('volunteers.delete_activity', activity_id=activity.id) }}"
+                  onsubmit="return confirm('Delete this activity and all its signups?')"
+                  style="display:inline">
+                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state">
+    <p>No volunteer activities yet.</p>
+    <a href="{{ url_for('volunteers.new_activity_form') }}" class="btn btn-primary">Create the first activity</a>
+</div>
+{% endif %}
+{% endblock %}

@@ -2,20 +2,10 @@ from functools import wraps
 from flask import Blueprint, request, redirect, url_for, render_template, flash, session
 from app.models import Member, Ministry
 from app.repositories.member_repos import MemberRepository
+from app.decorators import require_admin
 
 member_bp = Blueprint('members', __name__)
 repo = MemberRepository()
-
-
-def require_admin(f):
-    """Redirect to login if admin is not authenticated."""
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        if 'admin_id' not in session:
-            flash('Please log in to access this page.', 'error')
-            return redirect(url_for('auth.login_form'))
-        return f(*args, **kwargs)
-    return decorated
 
 
 @member_bp.route('/')
