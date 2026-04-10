@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Ministries – COGOP{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Ministries</h1>
+    <a href="{{ url_for('ministries.new_ministry_form') }}" class="btn btn-primary">+ New Ministry</a>
+</div>
+
+{% if ministries %}
+<table class="data-table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Leader</th>
+            <th>Contact</th>
+            <th>Members</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ministry in ministries %}
+        <tr>
+            <td>{{ ministry.name }}</td>
+            <td>{{ ministry.leader_name or '—' }}</td>
+            <td>{{ ministry.leader_contact or '—' }}</td>
+            <td>{{ ministry.members|length }}</td>
+            <td>
+                <form method="POST"
+                    action="{{ url_for('ministries.delete_ministry', ministry_id=ministry.id) }}"
+                    onsubmit="return confirm('Delete {{ ministry.name }}? Members assigned to it will become unassigned.')"
+                    style="display:inline">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<div class="empty-state">
+    <p>No ministries yet.</p>
+    <a href="{{ url_for('ministries.new_ministry_form') }}" class="btn btn-primary">Create the first ministry</a>
+</div>
+{% endif %}
+{% endblock %}

@@ -6,6 +6,7 @@ from app.routes.main_routes import main_bp
 from app.routes.announcement_routes import announcement_bp
 from app.routes.sermon_routes import sermon_bp
 from app.routes.volunteer_routes import volunteer_bp
+from app.routes.ministry_routes import ministry_bp
 
 app = Flask(__name__, template_folder='app/templates', static_folder='app/static')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cogop.db'
@@ -18,6 +19,7 @@ app.register_blueprint(member_bp, url_prefix='/members')
 app.register_blueprint(announcement_bp, url_prefix='/announcements')
 app.register_blueprint(sermon_bp, url_prefix="/sermons")
 app.register_blueprint(volunteer_bp, url_prefix="/volunteers")
+app.register_blueprint(ministry_bp, url_prefix="/ministries")
 app.register_blueprint(main_bp)
 
 if __name__ == '__main__':
